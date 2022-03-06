@@ -1,0 +1,92 @@
+<%- include('partials/header'); -%>
+
+<form action="/signup">
+  <h2>Login</h2>
+  <label for="email">Email</label>
+  <input type="text" name="email"  />
+  <div class="email error"></div>
+  <label for="password">Password</label>
+  <input type="password" name="password"  />
+  <div class="password error"></div>
+  <button>login</button>
+</form>
+
+<%- include('partials/footer'); -%>
+
+<script>
+  const form = document.querySelector('form');
+  const emailError = document.querySelector('.email.error');
+  const passwordError = document.querySelector('.password.error');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // reset errors
+    emailError.textContent = '';
+    passwordError.textContent = '';
+
+    // get values
+    const email = form.email.value;
+    const password = form.password.value;
+
+    try {
+      const res = await fetch('/login', { 
+        method: 'POST', 
+        body: JSON.stringify({ email, password }),
+        headers: {'Content-Type': 'application/json'}
+      });
+      const data = await res.json();
+      console.log(data);
+      if (data.errors) {
+        emailError.textContent = data.errors.email;
+        passwordError.textContent = data.errors.password;
+      }
+      if (data.user) {
+        location.assign('/');
+      }
+
+    }
+    catch (err) {
+      console.log(err);
+    }
+  });
+  lpTag.sdes = lpTag.sdes||[];
+    lpTag.sdes.push(
+       {
+            "type": "cart",  //MANDATORY
+            "total": 14.7,  //TOTAL VALUE OF THE CART AFTER DISCOUNT
+            "currency": "USD",  //CURRENCY CODE
+            "numItems": 6,  //NUMBER OF ITEMS IN CART
+            "page title":"Login Page",
+            "products": [{
+                "product": {
+                "name": "prod1",  //PRODUCT NAME
+                "category": "category",  //PRODUCT CATEGORY NAME
+                "sku": "sku",  //PRODUCT SKU OR UNIQUE IDENTIFIER
+                "price": 7.8  //SINGLE PRODUCT PRICE
+                }, "quantity": 1  //NUMBER OF PRODUCTS
+            }]
+       }
+    );
+    lpTag.sdes.push(
+       {
+            "type": "ctmrinfo",  //MANDATORY
+            "info": {
+            "page title":"Login Page",
+               "cstatus": "cancelled",  //CUSTOMER LIFECYCLE STATUS. FROM PRE-DEFINED LIST
+               "ctype": "vip",  //CUSTOMER TYPE OR TIER. FROM PRE-DEFINED LIST
+               "customerId": "138766AC",  //UNIQUE CUSTOMER IDENTIFIER
+               "balance": -400.99,  //THE CUSTOMER FINANCIAL BALANCE IN DECIMAL VALUE
+               "currency": "USD",  //CURRENCY CODE
+               "socialId": "11256324780",  //SOCIAL ID OF YOUR CHOICE: FACEBOOK, TWITTER ETC...
+               "imei": "3543546543545688",  //UNIQUE DEVICE OR PHONE IDENTIFIER
+               "userName": "user000",  //CONSUMER NICKNAME OR USERNAME
+               "companySize": 500,  //COMPANY SIZE MEASURED BY NUMBER OF EMPLOYEES
+               "companyBranch": "East Village",  //THE CUSTOMER'S COMPANY BRANCH NAME
+               "accountName": "bank corp",  //THE CUSTOMER'S COMPANY NAME
+               "role": "broker",  //CONSUMER ROLE TITLE
+            }
+       }
+    );
+  
+</script>
